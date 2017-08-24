@@ -120,4 +120,18 @@ defmodule Markus.WikipediaTest do
   test "widen_paths" do
     assert Markus.widen_paths(@normalized_preferences, @candidates) == @transitive_preferences
   end
+
+  test "schwartz_set" do
+    assert Markus.schwartz_set(@transitive_preferences, @candidates) == ["E"]
+  end
+
+  test "rank_candidates" do
+    assert Markus.rank_candidates(@transitive_preferences, @candidates) == [
+      {4, ["E"]},
+      {3, ["A"]},
+      {2, ["C"]},
+      {1, ["B"]},
+      {0, ["D"]},
+    ]
+  end
 end

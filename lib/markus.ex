@@ -77,4 +77,31 @@ defmodule Markus do
       end
     )
   end
+
+  defp loses_to(scores, a, b), do: scores[[a, b]] < scores[[b, a]]
+
+  def schwartz_set(scores, all_candidates) do
+    all_candidates
+    |> Enum.reject(
+      fn a ->
+        Enum.any?(
+          List.delete(all_candidates, a)
+          |> Stream.filter(fn b -> loses_to(scores, a, b) end)
+        )
+      end
+    )
+  end
+
+  def rank_candidates(scores, all_candidates) do
+    all_candidates
+    |> Enum.group_by(
+      fn a ->
+          List.delete(all_candidates, a)
+          |> Enum.reject(fn b -> loses_to(scores, a, b) end)
+          |> Enum.count
+      end
+    )
+    |> Enum.sort
+    |> Enum.reverse
+  end
 end

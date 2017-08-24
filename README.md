@@ -1,21 +1,7 @@
 # Markus
 
-**TODO: Add description**
+Implementation of the [Schulze voting method](https://en.wikipedia.org/wiki/Schulze_method).
 
-## Installation
+This implementation buries all non-named candidates.
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `markus` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:markus, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/markus](https://hexdocs.pm/markus).
-
+Check out `test/markus_wikipedia_test.exs` for the example on the Wikipedia page.

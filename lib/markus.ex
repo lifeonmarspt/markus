@@ -36,4 +36,53 @@ defmodule Markus do
       end
     )
   end
+
+  defp map_matrix(matrix, nodes, mapper) do
+    Combinatorics.multiply([nodes, nodes])
+    |> Enum.filter(&Logic.all_different/1)
+    |> Enum.map(fn [a, b] -> mapper.(matrix, a, b) end)
+    |> Map.new
+  end
+
+  def normalize_wins(preferences, all_candidates) do
+    map_matrix(
+      preferences,
+      all_candidates,
+      fn preferences, a, b ->
+        {
+          [a, b],
+          if preferences[[a,b]] > preferences[[b, a]] do
+            preferences[[a,b]]
+          else
+            0
+          end
+        }
+      end
+    )
+  end
+
+  def widen_paths(adjacencies, nodes) do
+    Enum.reduce(
+      nodes,
+      adjacencies,
+      fn pivot, scores ->
+        map_matrix(
+          scores,
+          nodes,
+          fn scores, a, b ->
+            {
+              [a, b],
+              max(
+                scores[[a, b]],
+                min(
+                  scores[[a, pivot]],
+                  scores[[pivot, b]]
+                )
+              )
+            }
+          end
+        )
+      end
+    )
+  end
 end

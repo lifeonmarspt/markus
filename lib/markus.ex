@@ -3,25 +3,26 @@ defmodule Markus do
   Documentation for Markus.
   """
 
-  defp burrying_pairs(ballot, all_candidates) do
+  defp burying_pairs(ballot, all_candidates) do
+    buried = Enum.reject(all_candidates, &Enum.member?(ballot, &1))
     for a <- ballot,
-        b <- Stream.reject(all_candidates, &Enum.member?(ballot, &1))
+        b <- buried
     do
       [a, b]
     end
   end
 
   def ballot_to_pairs(ballot, all_candidates) do
-    Stream.concat(
+    Enum.concat(
       Markus.Combinatorics.combine(ballot, 2),
-      burrying_pairs(ballot, all_candidates)
+      burying_pairs(ballot, all_candidates)
     )
-    |> Enum.to_list
   end
 
   defp candidates_matrix(all_candidates) do
     for a <- all_candidates,
-        b <- all_candidates
+        b <- all_candidates,
+        a != b
     do
       [a, b]
     end

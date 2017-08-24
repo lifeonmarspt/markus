@@ -2,34 +2,29 @@ defmodule Markus do
   @moduledoc """
   Documentation for Markus.
   """
+  alias Markus.Combinatorics
+  alias Markus.Logic
+
 
   defp burying_pairs(ballot, all_candidates) do
-    buried = Enum.reject(all_candidates, &Enum.member?(ballot, &1))
-    for a <- ballot,
-        b <- buried
-    do
-      [a, b]
-    end
+    Combinatorics.multiply([
+      ballot,
+      Enum.reject(all_candidates, &Enum.member?(ballot, &1))
+    ])
   end
 
   def ballot_to_pairs(ballot, all_candidates) do
     Enum.concat(
-      Markus.Combinatorics.combine(ballot, 2),
+      Combinatorics.combine(ballot, 2),
       burying_pairs(ballot, all_candidates)
     )
   end
 
   defp candidates_matrix(all_candidates) do
-    for a <- all_candidates,
-        b <- all_candidates,
-        a != b
-    do
-      [a, b]
-    end
+    Combinatorics.multiply([all_candidates, all_candidates])
+    |> Enum.filter(&Logic.all_different/1)
     |> Map.new(&{&1, 0})
   end
-
-  defp inc(a), do: a + 1
 
   def pairs_to_preferences(pairs, all_candidates) do
     pairs
@@ -37,7 +32,7 @@ defmodule Markus do
       candidates_matrix(all_candidates),
       fn pair, matrix ->
         matrix
-        |> Map.update!(pair, &inc/1)
+        |> Map.update!(pair, &(&1 + 1))
       end
     )
   end

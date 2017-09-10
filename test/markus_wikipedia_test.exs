@@ -134,4 +134,19 @@ defmodule Markus.WikipediaTest do
       {0, ["D"]},
     ]
   end
+
+  test "full thing" do
+    assert (
+      Markus.pairs_to_preferences(@votes, @candidates)
+      |> Markus.normalize_wins(@candidates)
+      |> Markus.widen_paths(@candidates)
+      |> Markus.rank_candidates(@candidates)
+    ) == [
+      {4, ["E"]},
+      {3, ["A"]},
+      {2, ["C"]},
+      {1, ["B"]},
+      {0, ["D"]},
+    ]
+  end
 end

@@ -258,4 +258,39 @@ defmodule Markus.Test do
       {0, ["E"]}
     ]
   end
+
+  test "sort_candidates_with_tie_breakers abc" do
+    assert Markus.sort_candidates_with_tie_breakers(
+      %{
+        ["A", "B"] => 10,
+        ["A", "C"] => 10,
+        ["A", "D"] => 5,
+        ["A", "E"] => 2,
+        ["B", "A"] => 10,
+        ["B", "C"] => 10,
+        ["B", "D"] => 5,
+        ["B", "E"] => 2,
+        ["C", "A"] => 10,
+        ["C", "B"] => 10,
+        ["C", "D"] => 5,
+        ["C", "E"] => 2,
+        ["D", "A"] => 0,
+        ["D", "B"] => 0,
+        ["D", "C"] => 0,
+        ["D", "E"] => 2,
+        ["E", "A"] => 0,
+        ["E", "B"] => 0,
+        ["E", "C"] => 0,
+        ["E", "D"] => 0,
+      },
+      @candidates,
+      Map.new(@candidates, &{&1, &1})
+    ) == [
+      "A",
+      "B",
+      "C",
+      "D",
+      "E",
+    ]
+  end
 end

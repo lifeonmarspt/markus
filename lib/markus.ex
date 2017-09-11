@@ -104,4 +104,16 @@ defmodule Markus do
     |> Enum.sort
     |> Enum.reverse
   end
+
+  def sort_candidates_with_tie_breakers(scores, all_candidates, tie_breakers) do
+    scores
+    |> rank_candidates(all_candidates)
+    |> Enum.map(&elem(&1, 1))
+    |> Enum.flat_map(fn level ->
+      level
+      |> Enum.map(&{tie_breakers[&1], &1})
+      |> Enum.sort
+      |> Enum.map(&elem(&1, 1))
+    end)
+  end
 end

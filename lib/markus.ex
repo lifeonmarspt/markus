@@ -57,6 +57,19 @@ defmodule Markus do
     )
   end
 
+  def normalize_margins(preferences, all_candidates) do
+    map_matrix(
+      all_candidates,
+      fn a, b ->
+        if preferences[[a,b]] > preferences[[b, a]] do
+          preferences[[a,b]] - preferences[[b, a]]
+        else
+          0
+        end
+      end
+    )
+  end
+
   def widen_paths(adjacencies, nodes) do
     Enum.reduce(
       nodes,

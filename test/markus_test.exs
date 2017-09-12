@@ -330,11 +330,11 @@ defmodule Markus.Test do
         ["E", "D"] => 0,
       },
       @candidates,
-      Map.new(@candidates, &{&1, &1})
+      Map.new(@candidates, &{&1, -1 * (String.to_charlist(&1) |> List.first)})
     ) == [
-      "A",
-      "B",
       "C",
+      "B",
+      "A",
       "D",
       "E",
     ]
